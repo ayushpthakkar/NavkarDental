@@ -1,0 +1,243 @@
+(function () {
+  "use strict";
+
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Mobile nav ---------- */
+  var toggle = document.querySelector(".nav-toggle");
+  var nav = document.querySelector(".main-nav");
+  var backdrop = document.querySelector(".nav-backdrop");
+
+  function closeNav() {
+    if (!nav) return;
+    nav.classList.remove("open");
+    if (backdrop) backdrop.classList.remove("open");
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+  }
+  function openNav() {
+    if (!nav) return;
+    nav.classList.add("open");
+    if (backdrop) backdrop.classList.add("open");
+    if (toggle) toggle.setAttribute("aria-expanded", "true");
+  }
+  if (toggle && nav) {
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.addEventListener("click", function () {
+      var isOpen = nav.classList.contains("open");
+      if (isOpen) closeNav(); else openNav();
+    });
+    nav.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", closeNav);
+    });
+    if (backdrop) backdrop.addEventListener("click", closeNav);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeNav();
+    });
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  var revealEls = document.querySelectorAll(".reveal, .reveal-tilt");
+  if (revealEls.length) {
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      revealEls.forEach(function (el) { el.classList.add("in-view"); });
+    } else {
+      // Stagger tilt-reveal cards within each grid so they settle in sequence.
+      var seen = new Map();
+      document.querySelectorAll(".reveal-tilt").forEach(function (el) {
+        var parent = el.parentElement;
+        var i = seen.has(parent) ? seen.get(parent) : 0;
+        el.style.transitionDelay = (Math.min(i, 7) * 70) + "ms";
+        seen.set(parent, i + 1);
+      });
+
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in-view");
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
+      );
+      revealEls.forEach(function (el) { io.observe(el); });
+    }
+  }
+
+  /* ---------- Hero 3D parallax (pointer:fine only, rAF-batched) ---------- */
+  var heroScene = document.querySelector(".hero-scene");
+  if (heroScene && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
+    var rafId = null;
+    var targetX = 0, targetY = 0;
+    var hero = document.querySelector(".hero");
+
+    function apply() {
+      heroScene.style.transform =
+        "rotateY(" + targetX + "deg) rotateX(" + targetY + "deg)";
+      rafId = null;
+    }
+    (hero || document).addEventListener("mousemove", function (e) {
+      var rect = heroScene.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      var dx = (e.clientX - cx) / rect.width;
+      var dy = (e.clientY - cy) / rect.height;
+      targetX = Math.max(-1, Math.min(1, dx)) * 8;
+      targetY = Math.max(-1, Math.min(1, -dy)) * 6;
+      if (rafId === null) rafId = requestAnimationFrame(apply);
+    });
+    (hero || document).addEventListener("mouseleave", function () {
+      targetX = 0; targetY = 0;
+      if (rafId === null) rafId = requestAnimationFrame(apply);
+    });
+  }
+
+  /* ---------- Tilt cards ---------- */
+  if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
+    document.querySelectorAll(".tilt-card").forEach(function (card) {
+      var raf = null, tx = 0, ty = 0, gx = 50, gy = 50;
+      function apply() {
+        card.style.transform =
+          "perspective(900px) rotateY(" + tx + "deg) rotateX(" + ty + "deg) translateY(-6px) scale(1.015)";
+        card.style.setProperty("--gx", gx + "%");
+        card.style.setProperty("--gy", gy + "%");
+        raf = null;
+      }
+      card.addEventListener("mousemove", function (e) {
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        tx = px * 16;
+        ty = -py * 16;
+        gx = (px + 0.5) * 100;
+        gy = (py + 0.5) * 100;
+        if (raf === null) raf = requestAnimationFrame(apply);
+      });
+      card.addEventListener("mouseleave", function () {
+        card.style.transform = "";
+      });
+    });
+  }
+
+  /* ---------- Gallery filter ---------- */
+  var filterBtns = document.querySelectorAll(".gallery-filters button");
+  var figures = document.querySelectorAll(".masonry figure");
+  if (filterBtns.length && figures.length) {
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        filterBtns.forEach(function (b) {
+          b.classList.remove("active");
+          b.setAttribute("aria-pressed", "false");
+        });
+        btn.classList.add("active");
+        btn.setAttribute("aria-pressed", "true");
+        var filter = btn.getAttribute("data-filter");
+        figures.forEach(function (fig) {
+          var match = filter === "all" || fig.getAttribute("data-cat") === filter;
+          fig.classList.toggle("hidden", !match);
+        });
+      });
+    });
+  }
+
+  /* ---------- Contact form ---------- */
+  var form = document.getElementById("contact-form");
+  if (form) {
+    var status = document.getElementById("form-status");
+    var FORM_ENDPOINT = form.getAttribute("data-endpoint") || "";
+
+    function setFieldError(field, message) {
+      var wrap = field.closest(".field");
+      if (!wrap) return;
+      var errorEl = wrap.querySelector(".field-error");
+      if (message) {
+        wrap.classList.add("invalid");
+        if (errorEl) errorEl.textContent = message;
+      } else {
+        wrap.classList.remove("invalid");
+        if (errorEl) errorEl.textContent = "";
+      }
+    }
+
+    function validate() {
+      var valid = true;
+      var name = form.querySelector("#name");
+      var phone = form.querySelector("#phone");
+
+      if (!name.value.trim()) {
+        setFieldError(name, "Please enter your name.");
+        valid = false;
+      } else {
+        setFieldError(name, "");
+      }
+
+      var phoneDigits = phone.value.replace(/\D/g, "");
+      if (phoneDigits.length < 10) {
+        setFieldError(phone, "Please enter a valid phone number.");
+        valid = false;
+      } else {
+        setFieldError(phone, "");
+      }
+
+      return valid;
+    }
+
+    function showStatus(kind, message) {
+      if (!status) return;
+      status.className = "form-status " + kind;
+      status.textContent = message;
+      status.setAttribute("role", "status");
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      var honeypot = form.querySelector('input[name="_gotcha"]');
+      if (honeypot && honeypot.value) {
+        return; // silently drop — bot filled the hidden field
+      }
+
+      if (!validate()) {
+        showStatus("error", "Please fix the highlighted fields and try again.");
+        return;
+      }
+
+      if (!FORM_ENDPOINT) {
+        showStatus(
+          "error",
+          "Online booking isn't connected yet — please call 079 4604 7016 / +91 87587 53888 to book, or use the WhatsApp button."
+        );
+        return;
+      }
+
+      var submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+      showStatus("sending", "Sending your request…");
+
+      fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      })
+        .then(function (res) {
+          if (res.ok) {
+            showStatus("success", "Thank you — your request has been sent. Our team will call to confirm your slot.");
+            form.reset();
+          } else {
+            return res.json().then(function (data) {
+              var msg = (data && data.errors && data.errors.map(function (er) { return er.message; }).join(", ")) ||
+                "Something went wrong sending your request.";
+              showStatus("error", msg + " Please call 079 4604 7016 instead.");
+            });
+          }
+        })
+        .catch(function () {
+          showStatus("error", "Network error — please call 079 4604 7016 or +91 87587 53888 to book directly.");
+        })
+        .finally(function () {
+          if (submitBtn) submitBtn.disabled = false;
+        });
+    });
+  }
+})();

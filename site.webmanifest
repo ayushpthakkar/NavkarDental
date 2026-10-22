@@ -1,0 +1,12 @@
+{
+  "name": "Navkar Orthodontic & Dental Clinic",
+  "short_name": "Navkar Dental",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#F7F3EC",
+  "theme_color": "#1F3A34",
+  "icons": [
+    { "src": "img/logo-mark-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "img/logo-mark-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
