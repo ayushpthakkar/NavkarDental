@@ -59,7 +59,9 @@
             }
           });
         },
-        { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
+        // threshold 0, not a ratio: a tall section (e.g. the gallery on mobile)
+        // can never have a fixed fraction of itself on screen, so it'd stay hidden.
+        { threshold: 0, rootMargin: "0px 0px -60px 0px" }
       );
       revealEls.forEach(function (el) { io.observe(el); });
     }
