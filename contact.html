@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.min.css">
+<link rel="stylesheet" href="css/style.min.css?v=20261026">
 
 <script type="application/ld+json">
 {
@@ -56,7 +56,7 @@
 <header class="site-header">
   <div class="wrap">
     <a href="index.html" class="brand"><span class="brand-mark"></span>Navkar Dental</a>
-    <nav class="main-nav" aria-label="Primary">
+    <nav class="main-nav" id="primary-nav" aria-label="Primary">
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
@@ -69,7 +69,7 @@
       <span class="header-phone"><a href="tel:+917946047016">079 4604 7016</a></span>
       <a href="contact.html" class="btn btn-primary btn-sm">Book Appointment</a>
     </div>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button>
   </div>
   <div class="nav-backdrop"></div>
 </header>
@@ -91,19 +91,19 @@
       <div class="contact-info-card">
         <ul>
           <li>
-            <div class="ic"></div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></div>
             <div><strong>Phone</strong><span><a href="tel:+917946047016">079 4604 7016</a> &nbsp;·&nbsp; <a href="tel:+918758753888">+91 87587 53888</a></span></div>
           </li>
           <li>
-            <div class="ic"></div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
             <div><strong>Address</strong><span><a href="https://maps.google.com/?q=Maple+Trade+Center,+Near+Surdhara+Circle,+Thaltej,+Ahmedabad+380054" target="_blank" rel="noopener">Ground Floor-12, Maple Trade Center, Near Surdhara Circle, Thaltej, Ahmedabad – 380054</a></span></div>
           </li>
           <li>
-            <div class="ic"></div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
             <div><strong>Business Hours</strong><span>Mon–Sat: 10am–1pm, 4pm–8pm · Sunday: On prior appointment</span></div>
           </li>
           <li>
-            <div class="ic"></div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-8-4.6-8-10.4A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 8 2.5c0 5.8-8 10.4-8 10.4z"/></svg></div>
             <div><strong>Follow</strong><span><a href="https://www.instagram.com/navkar_orthodontics/" target="_blank" rel="noopener">Instagram @navkar_orthodontics</a> · <a href="https://www.facebook.com/people/Navkar-dental-Clinic/100086938672000/" target="_blank" rel="noopener">Facebook</a></span></div>
           </li>
         </ul>
@@ -140,12 +140,12 @@
         <div class="field">
           <label for="service">Service</label>
           <select id="service" name="service">
+            <option selected>General consultation / Not sure yet</option>
             <option>Braces &amp; Aligners</option>
             <option>Cleaning &amp; Whitening</option>
             <option>Root Canal Treatment</option>
             <option>Smile Design</option>
             <option>Pediatric Dentistry</option>
-            <option>General Consultation</option>
           </select>
         </div>
         <div class="field-row">
@@ -155,7 +155,11 @@
           </div>
           <div class="field">
             <label for="time">Preferred time</label>
-            <input id="time" name="time" type="time">
+            <select id="time" name="time">
+              <option value="">Any time</option>
+              <option>Morning (10am–1pm)</option>
+              <option>Evening (4pm–8pm)</option>
+            </select>
           </div>
         </div>
         <div class="field">
@@ -176,10 +180,10 @@
   <div class="wrap footer-grid">
     <div>
       <a href="index.html" class="brand"><span class="brand-mark"></span>Navkar Dental</a>
-      <p>A team of certified dentists offering specialist orthodontic and general dental care in Thaltej, Ahmedabad.</p>
+      <p>Specialist orthodontic and general dental care in Thaltej, Ahmedabad, led by Dr. Aesha Acharya Thakkar.</p>
       <div class="footer-social">
-        <a href="https://www.facebook.com/people/Navkar-dental-Clinic/100086938672000/" aria-label="Facebook" target="_blank" rel="noopener">f</a>
-        <a href="https://www.instagram.com/navkar_orthodontics/" aria-label="Instagram" target="_blank" rel="noopener">ig</a>
+        <a href="https://www.facebook.com/people/Navkar-dental-Clinic/100086938672000/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5H16l.5-3h-3V8.6c0-.87.3-1.6 1.6-1.6h1.5V4.3c-.3-.04-1.2-.12-2.3-.12-2.3 0-3.8 1.4-3.8 3.9v2.4H7v3h2.5V21h4z"/></svg></a>
+        <a href="https://www.instagram.com/navkar_orthodontics/" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
       </div>
     </div>
     <div>
@@ -213,6 +217,6 @@
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.48 1.34 5L2 22l5.2-1.36a9.94 9.94 0 0 0 4.84 1.24h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm5.83 14.24c-.24.68-1.4 1.32-1.93 1.36-.5.05-1 .25-3.4-.83-2.86-1.28-4.62-4.24-4.76-4.44-.14-.2-1.13-1.5-1.13-2.86 0-1.36.7-2.02.96-2.3.24-.26.53-.32.7-.32h.5c.16 0 .38-.03.58.44.24.57.8 1.98.87 2.12.07.14.12.3.02.5-.1.2-.15.32-.3.5-.15.18-.3.4-.44.53-.14.14-.3.3-.13.58.17.28.75 1.24 1.62 2 1.12.99 2.06 1.3 2.34 1.45.28.14.44.12.6-.07.17-.2.7-.82.9-1.1.2-.28.4-.23.66-.14.28.1 1.76.83 2.06.98.3.15.5.22.57.35.08.13.08.75-.16 1.43z"/></svg>
 </a>
 
-<script src="js/script.min.js"></script>
+<script src="js/script.min.js?v=20261026"></script>
 </body>
 </html>

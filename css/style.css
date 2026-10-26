@@ -611,8 +611,8 @@ section{padding:96px 0;}
    ========================================================================== */
 .values-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
 .value-card{background:var(--white);border-radius:var(--radius-md);padding:28px 24px;box-shadow:var(--shadow-sm);}
-.value-card .icon{width:44px;height:44px;border-radius:12px;background:var(--sage-light);margin-bottom:16px;position:relative;}
-.value-card .icon::after{content:'';position:absolute;inset:12px;border-radius:5px;background:var(--teal);}
+.value-card .icon{width:44px;height:44px;border-radius:12px;background:var(--sage-light);margin-bottom:16px;display:flex;align-items:center;justify-content:center;color:var(--teal);}
+.value-card .icon svg{width:22px;height:22px;}
 .value-card h3{font-size:17px;margin-bottom:8px;}
 .value-card p{font-size:13.5px;color:var(--charcoal-soft);}
 
@@ -688,7 +688,8 @@ section{padding:96px 0;}
 .contact-info-card{background:var(--white);border-radius:var(--radius-md);padding:34px;box-shadow:var(--shadow-sm);}
 .contact-info-card ul{display:grid;gap:24px;}
 .contact-info-card li{display:flex;gap:16px;align-items:flex-start;}
-.contact-info-card .ic{width:42px;height:42px;border-radius:12px;background:var(--sage-light);flex:0 0 auto;}
+.contact-info-card .ic{width:42px;height:42px;border-radius:12px;background:var(--sage-light);flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:var(--teal);}
+.contact-info-card .ic svg{width:20px;height:20px;}
 .contact-info-card strong{display:block;color:var(--teal);font-size:15px;margin-bottom:4px;}
 .contact-info-card span{font-size:14px;color:var(--charcoal-soft);line-height:1.5;}
 .contact-info-card a{color:inherit;}
@@ -766,6 +767,7 @@ footer p{font-size:14px;line-height:1.7;margin-top:14px;color:rgba(247,243,236,.
   transition:background .25s var(--ease);
 }
 .footer-social a:hover{background:var(--clay);}
+.footer-social svg{width:16px;height:16px;}
 footer h4{color:var(--ivory);font-size:14px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:18px;}
 footer .footer-grid ul{display:grid;gap:11px;}
 footer .footer-grid ul a{font-size:14.5px;color:rgba(247,243,236,.68);transition:color .25s var(--ease);}

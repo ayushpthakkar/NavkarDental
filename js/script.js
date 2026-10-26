@@ -115,6 +115,8 @@
         if (raf === null) raf = requestAnimationFrame(apply);
       });
       card.addEventListener("mouseleave", function () {
+        // Drop any queued frame, or it re-applies the tilt after the reset.
+        if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
         card.style.transform = "";
       });
     });
@@ -146,6 +148,13 @@
   if (form) {
     var status = document.getElementById("form-status");
     var FORM_ENDPOINT = form.getAttribute("data-endpoint") || "";
+
+    // Don't let patients pick a date that has already passed.
+    var dateInput = form.querySelector("#date");
+    if (dateInput) {
+      var now = new Date();
+      dateInput.min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    }
 
     function setFieldError(field, message) {
       var wrap = field.closest(".field");
